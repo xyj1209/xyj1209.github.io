@@ -414,6 +414,63 @@ public void testOutOfMemoryError() {
 <blockquote>
 <p>优点：可以显著提升性能，避免在Java堆和Native堆来回复制数据。</p>
 </blockquote>
+<hr>
+<h2 id="垃圾收集器与内存分配策略"><a href="#垃圾收集器与内存分配策略" class="headerlink" title="垃圾收集器与内存分配策略"></a>垃圾收集器与内存分配策略</h2><hr>
+<h3 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h3><blockquote>
+<p>简略介绍几种垃圾回收算法</p>
+</blockquote>
+<h4 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h4><p>标记-清除算法指的是对需要进行回收的内存段进行标记，再进行清除。</p>
+<blockquote>
+<p>缺点：</p>
+<ol>
+<li>空间问题：会产生大量不连续的碎片化的内存。</li>
+<li>时间问题：标记和清除的效率都不高。</li>
+</ol>
+</blockquote>
+<h4 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h4><p>标记-整理算法相对于标记-清除算法的改进在于回收内存后剩余的存活对象是连续的，空间效率变高了。</p>
+<blockquote>
+<p>主要实现是让存活的对象向一端靠拢，再清除另一端被标记的内存对象。</p>
+</blockquote>
+<p><strong><em>以上两种算法多用于老年代的内存回收，由老年代内存对象大部分不被清理的特征决定了。</em></strong></p>
+<h4 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h4><p>复制算法多用于新生代，把内存划分为Eden(80%)、From Survivor(10%)、To Survivor(10%),回收的过程是把Eden和一个Survivor区的存活对象复制到另一个Survivor,所以浪费的内存空间有10%。</p>
+<blockquote>
+<p>复制算法用于新生代,由98%（不绝对）的新生代对象都会被回收的特征决定的。<br>由于不能保证每次回收剩余的内存对象会少于10%,所以需要分配担保。所有超出10%的对象都会直接进入老年代。</p>
+</blockquote>
+<h3 id="判断对象是否存活的算法"><a href="#判断对象是否存活的算法" class="headerlink" title="判断对象是否存活的算法"></a>判断对象是否存活的算法</h3><h4 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h4><p>引用计数算法是给对象添加一个引用计数器，有引用，计数器加一，引用失效，计数器减一。<br>引用计数器算法的效率很高，也很简单。但是，虚拟机并不采用这种方法。<br>由以下代码可以说明：</p>
+<pre><code>public class Main {
+    public Object instance=null;
+    public static void main(String[] args) {
+        Main m1=new Main();//m1:0+1
+        Main m2=new Main();
+        m1.instance=m2;//m1:1+1
+        m2.instance=m1;
+
+        m1=null;//m1:2-1
+        m2=null;
+        System.gc();
+    }
+
+}
+</code></pre><h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><p>可达性分析算法是判断对象到GC Roots有没有引用链，没有就被回收。</p>
+<blockquote>
+<p>GC Roots：</p>
+<ol>
+<li>虚拟机栈（栈帧的本地变量表）中引用的对象。</li>
+<li>方法区中类静态属性引用的对象。</li>
+<li>方法区中常量引用的对象。</li>
+<li>本地方法栈中JNI(即一般说的Native方法)引用的对象。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>引用分类</p>
+<ol>
+<li>强引用</li>
+<li>软引用</li>
+<li>弱引用</li>
+<li>虚引用</li>
+</ol>
+</blockquote>
+<h3 id="垃圾回收器的介绍"><a href="#垃圾回收器的介绍" class="headerlink" title="垃圾回收器的介绍"></a>垃圾回收器的介绍</h3><p>//TODO</p>
 
           
         
