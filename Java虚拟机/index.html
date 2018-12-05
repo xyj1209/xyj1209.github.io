@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="江南小俊">
 <meta property="og:description" content="运行时数据区域 程序计数器（Program Counter Register）线程私有当前线程的执行指令的指向（虚拟机字节码指令的地址）  Java虚拟机栈（VM Stack）线程私有每个方法在执行的同时会创建一个栈帧，用于存储局部变量表、操作数栈、动态链接、方法出口等，局部变量表存放编译器可知的各种基本数据类型、对象引用、代表对象的句柄或其它与此对象相关的位置、returnAddress类型。其">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-05T14:41:44.276Z">
+<meta property="og:updated_time" content="2018-12-05T15:28:45.436Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java虚拟机">
 <meta name="twitter:description" content="运行时数据区域 程序计数器（Program Counter Register）线程私有当前线程的执行指令的指向（虚拟机字节码指令的地址）  Java虚拟机栈（VM Stack）线程私有每个方法在执行的同时会创建一个栈帧，用于存储局部变量表、操作数栈、动态链接、方法出口等，局部变量表存放编译器可知的各种基本数据类型、对象引用、代表对象的句柄或其它与此对象相关的位置、returnAddress类型。其">
@@ -393,7 +393,22 @@ public void testOutOfMemoryError() {
 </blockquote>
 <p>Java堆可细分为<strong>新生代</strong>和<strong>老年代</strong>。<br>新生代又可划分出<strong>Eden、From Survivor、To Survivor</strong>。<br>还可划分为<strong>多个线程私有的分配缓冲区（TLAB）</strong>，目的是为了防止多线程并发请求分配同一段内存冲突的情况发生。<br>Java堆是逻辑上连续的内存空间，物理上不一定会连续。</p>
 <blockquote>
-<p>通过 <strong>-Xms</strong> 可以设置堆的初始大小<br>通过 <strong>-Xmx</strong> 可以设置堆的最大大小<br>当堆上没有足够内存空间分配给对象或者没有空间进行拓展的时候，会抛出<strong>OutOfMemoryError</strong></p>
+<p>通过 <strong>-Xms</strong> 可以设置堆的初始大小<br>通过 <strong>-Xmx</strong> 可以设置堆的最大大小<br>当堆上没有足够内存空间分配给对象或者没有空间进行扩展的时候，会抛出<strong>OutOfMemoryError</strong></p>
+</blockquote>
+<h3 id="方法区（Method-Area）线程共享"><a href="#方法区（Method-Area）线程共享" class="headerlink" title="方法区（Method Area）线程共享"></a>方法区（Method Area）线程共享</h3><p>用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
+<blockquote>
+<p>HotSpot 把它划分为永久代，或者说用永久代来实现方法区</p>
+</blockquote>
+<blockquote>
+<p>内存回收主要是常量池回收和类型卸载</p>
+</blockquote>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>属于方法区的一部分，存放编译器生成的各种符号引用和字面量。</p>
+<blockquote>
+<p>常量不一定只在编译器时产生，如String.intern()可以在运行时动态产生常量。</p>
+</blockquote>
+<h3 id="附加知识点"><a href="#附加知识点" class="headerlink" title="附加知识点"></a>附加知识点</h3><h4 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h4><p>不是虚拟机运行时区域的一部分，但是有一些关系，这里也来扯一下。通过使用Native函数直接分配堆外内存。本机直接内存不会受Java堆的限制，但会受本机内存的限制如RAM、Swap以及分页文件。</p>
+<blockquote>
+<p>优点：可以显著提升性能，避免在Java堆和Native堆来回复制数据。</p>
 </blockquote>
 
       
@@ -569,7 +584,7 @@ public void testOutOfMemoryError() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.</span> <span class="nav-text">运行时数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器（Program-Counter-Register）线程私有"><span class="nav-number">1.1.</span> <span class="nav-text">程序计数器（Program Counter Register）线程私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java虚拟机栈（VM-Stack）线程私有"><span class="nav-number">1.2.</span> <span class="nav-text">Java虚拟机栈（VM Stack）线程私有</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-StackOverflowError"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. StackOverflowError</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-OotOfMemoryError"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. OotOfMemoryError</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈（Native-Method-Stack）线程私有"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈（Native Method Stack）线程私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java堆（Heap）（GC堆）线程共享"><span class="nav-number">1.4.</span> <span class="nav-text">Java堆（Heap）（GC堆）线程共享</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时数据区域"><span class="nav-number">1.</span> <span class="nav-text">运行时数据区域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器（Program-Counter-Register）线程私有"><span class="nav-number">1.1.</span> <span class="nav-text">程序计数器（Program Counter Register）线程私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java虚拟机栈（VM-Stack）线程私有"><span class="nav-number">1.2.</span> <span class="nav-text">Java虚拟机栈（VM Stack）线程私有</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-StackOverflowError"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. StackOverflowError</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-OotOfMemoryError"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. OotOfMemoryError</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈（Native-Method-Stack）线程私有"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈（Native Method Stack）线程私有</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java堆（Heap）（GC堆）线程共享"><span class="nav-number">1.4.</span> <span class="nav-text">Java堆（Heap）（GC堆）线程共享</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区（Method-Area）线程共享"><span class="nav-number">1.5.</span> <span class="nav-text">方法区（Method Area）线程共享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行时常量池"><span class="nav-number">1.5.1.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附加知识点"><span class="nav-number">1.6.</span> <span class="nav-text">附加知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接内存"><span class="nav-number">1.6.1.</span> <span class="nav-text">直接内存</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -1229,5 +1244,6 @@ public void testOutOfMemoryError() {
 
   
 
+  
 </body>
 </html>
