@@ -86,16 +86,16 @@
 
 
 
-<meta name="description" content="学习每样东西，都以最谦虚的态度去学">
+<meta name="description" content="以最低的姿态去学习，去汲取宝贵的知识">
 <meta property="og:type" content="website">
 <meta property="og:title" content="江南小俊">
-<meta property="og:url" content="http://blog.myjnxj.top/index.html">
+<meta property="og:url" content="https://xyj1209.github.io/index.html">
 <meta property="og:site_name" content="江南小俊">
-<meta property="og:description" content="学习每样东西，都以最谦虚的态度去学">
+<meta property="og:description" content="以最低的姿态去学习，去汲取宝贵的知识">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="江南小俊">
-<meta name="twitter:description" content="学习每样东西，都以最谦虚的态度去学">
+<meta name="twitter:description" content="以最低的姿态去学习，去汲取宝贵的知识">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://blog.myjnxj.top/">
+  <link rel="canonical" href="https://xyj1209.github.io/">
 
 
 
@@ -281,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.myjnxj.top/Java虚拟机/">
+    <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/Java虚拟机/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="江南小俊">
@@ -387,11 +387,19 @@ public void testOutOfMemoryError() {
         new ArrayList&lt;String&gt;(1000000000);  
     }  
 }
-</code></pre><h3 id="本地方法栈（Native-Method-Stack）"><a href="#本地方法栈（Native-Method-Stack）" class="headerlink" title="本地方法栈（Native Method Stack）"></a>本地方法栈（Native Method Stack）</h3><p>本地方法栈和虚拟机栈的作用差不多，服务对象是本地方法，而虚拟机栈是服务Java方法。其它方面和虚拟机栈差不多。</p>
+</code></pre><h3 id="本地方法栈（Native-Method-Stack）线程私有"><a href="#本地方法栈（Native-Method-Stack）线程私有" class="headerlink" title="本地方法栈（Native Method Stack）线程私有"></a>本地方法栈（Native Method Stack）线程私有</h3><p>本地方法栈和虚拟机栈的作用差不多，服务对象是本地方法，而虚拟机栈是服务Java方法。其它方面和虚拟机栈差不多。</p>
 <blockquote>
 <p>Sun Hot Spot 把两者合为一体。</p>
 </blockquote>
-<h3 id="Java堆（Heap）"><a href="#Java堆（Heap）" class="headerlink" title="Java堆（Heap）"></a>Java堆（Heap）</h3>
+<h3 id="Java堆（Heap）（GC堆）线程共享"><a href="#Java堆（Heap）（GC堆）线程共享" class="headerlink" title="Java堆（Heap）（GC堆）线程共享"></a>Java堆（Heap）（GC堆）线程共享</h3><p>Java堆是线程共享的内存，在虚拟机启动的时候创建，唯一目的是存放对象实例。几乎所有的对象都是在Java堆上进行分配。</p>
+<blockquote>
+<p>注：栈上分配、标量替换优化技术使得堆上分配技术变得不那么绝对。</p>
+</blockquote>
+<p>Java堆可细分为<strong>新生代</strong>和<strong>老年代</strong>。<br>新生代又可划分出<strong>Eden、From Survivor、To Survivor</strong>。<br>还可划分为<strong>多个线程私有的分配缓冲区（TLAB）</strong>，目的是为了防止多线程并发请求分配同一段内存冲突的情况发生。<br>Java堆是逻辑上连续的内存空间，物理上不一定会连续。</p>
+<blockquote>
+<p>通过 <strong>-Xms</strong> 可以设置堆的初始大小<br>通过 <strong>-Xmx</strong> 可以设置堆的最大大小<br>当堆上没有足够内存空间分配给对象或者没有空间进行拓展的时候，会抛出<strong>OutOfMemoryError</strong></p>
+</blockquote>
+
           
         
       
@@ -462,7 +470,7 @@ public void testOutOfMemoryError() {
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">江南小俊</p>
-              <p class="site-description motion-element" itemprop="description">学习每样东西，都以最谦虚的态度去学</p>
+              <p class="site-description motion-element" itemprop="description">以最低的姿态去学习，去汲取宝贵的知识</p>
           </div>
 
           <nav class="site-state motion-element">
