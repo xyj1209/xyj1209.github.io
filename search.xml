@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title><![CDATA[Java虚拟机]]></title>
-    <url>%2FJava%E8%99%9A%E6%8B%9F%E6%9C%BA%2F</url>
-    <content type="text"><![CDATA[运行时数据区域 程序计数器（Program Counter Register）线程私有当前线程的执行指令的指向（虚拟机字节码指令的地址） Java虚拟机栈（VM Stack）线程私有每个方法在执行的同时会创建一个栈帧，用于存储局部变量表、操作数栈、动态链接、方法出口等，局部变量表存放编译器可知的各种基本数据类型、对象引用、代表对象的句柄或其它与此对象相关的位置、returnAddress类型。其中double、long会占用两个局部变量的空间（Slot）。 有关这个区域的两种异常状况 1. StackOverflowError这个错误指的是栈的层数超出了虚拟机允许的层数 示例代码： @Test public void testStackOverflowError() { testStackOverflowError(); } 2. OotOfMemoryError这个错误指的是扩展内容超出了虚拟机分配的内存，无法请求得到 示例代码： @Test public void testOutOfMemoryError() { while(true) { new ArrayList&lt;String&gt;(1000000000); } } 本地方法栈（Native Method Stack）本地方法栈和虚拟机栈的作用差不多，服务对象是本地方法，而虚拟机栈是服务Java方法。其它方面和虚拟机栈差不多。 Sun Hot Spot 把两者合为一体。 Java堆（Heap）]]></content>
-  </entry>
+<search> 
+  
+    
+    <entry>
+      <title>Java虚拟机</title>
+      <link href="/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+      <url>/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/</url>
+      
+        <content type="html"><![CDATA[<h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><hr><h3 id="程序计数器（Program-Counter-Register）线程私有"><a href="#程序计数器（Program-Counter-Register）线程私有" class="headerlink" title="程序计数器（Program Counter Register）线程私有"></a>程序计数器（Program Counter Register）线程私有</h3><p>当前线程的执行指令的指向（虚拟机字节码指令的地址） </p><h3 id="Java虚拟机栈（VM-Stack）线程私有"><a href="#Java虚拟机栈（VM-Stack）线程私有" class="headerlink" title="Java虚拟机栈（VM Stack）线程私有"></a>Java虚拟机栈（VM Stack）线程私有</h3><p>每个方法在执行的同时会创建一个栈帧，用于存储局部变量表、操作数栈、动态链接、方法出口等，局部变量表存放编译器可知的各种基本数据类型、对象引用、代表对象的句柄或其它与此对象相关的位置、returnAddress类型。其中double、long会占用两个局部变量的空间（Slot）。  </p><blockquote><p>有关这个区域的两种异常状况</p></blockquote><h4 id="1-StackOverflowError"><a href="#1-StackOverflowError" class="headerlink" title="1. StackOverflowError"></a>1. StackOverflowError</h4><p>这个错误指的是栈的层数超出了虚拟机允许的层数  </p><blockquote><p>示例代码：</p></blockquote><pre><code>@Test public void testStackOverflowError() {      testStackOverflowError();  }</code></pre><h4 id="2-OotOfMemoryError"><a href="#2-OotOfMemoryError" class="headerlink" title="2. OotOfMemoryError"></a>2. OotOfMemoryError</h4><p>这个错误指的是扩展内容超出了虚拟机分配的内存，无法请求得到  </p><blockquote><p>示例代码：</p></blockquote><pre><code>@Test  public void testOutOfMemoryError() {      while(true) {          new ArrayList&lt;String&gt;(1000000000);      }  }</code></pre><h3 id="本地方法栈（Native-Method-Stack）"><a href="#本地方法栈（Native-Method-Stack）" class="headerlink" title="本地方法栈（Native Method Stack）"></a>本地方法栈（Native Method Stack）</h3><p>本地方法栈和虚拟机栈的作用差不多，服务对象是本地方法，而虚拟机栈是服务Java方法。其它方面和虚拟机栈差不多。</p><blockquote><p>Sun Hot Spot 把两者合为一体。</p></blockquote><h3 id="Java堆（Heap）"><a href="#Java堆（Heap）" class="headerlink" title="Java堆（Heap）"></a>Java堆（Heap）</h3>]]></content>
+      
+      
+      
+    </entry>
+    
+  
+  
 </search>
