@@ -377,7 +377,7 @@
 public void testStackOverflowError() {  
     testStackOverflowError();  
 }
-</code></pre><h4 id="2-OotOfMemoryError"><a href="#2-OotOfMemoryError" class="headerlink" title="2. OotOfMemoryError"></a>2. OotOfMemoryError</h4><p>这个错误指的是扩展内容超出了虚拟机分配的内存，无法请求得到  </p>
+</code></pre><h4 id="2-OutOfMemoryError"><a href="#2-OutOfMemoryError" class="headerlink" title="2. OutOfMemoryError"></a>2. OutOfMemoryError</h4><p>这个错误指的是扩展内容超出了虚拟机分配的内存，无法请求得到  </p>
 <blockquote>
 <p>示例代码：</p>
 </blockquote>
@@ -539,7 +539,101 @@ public void testOutOfMemoryError() {
 </li>
 </ul>
 <hr>
-<h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2>
+<h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2><p>类加载的生命周期： 加载、验证、准备、解析、初始化、使用、卸载.<br>加载、验证、准备、初始化、卸载这五个阶段的顺序是一定的。</p>
+<h3 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h3><ul>
+<li><p>加载</p>
+<blockquote>
+<p>在加载阶段，虚拟机要完成三件事情</p>
+</blockquote>
+<ol>
+<li>通过一个类的全限定名来获取定义此类的二进制字节流。</li>
+<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。</li>
+<li>在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。</li>
+</ol>
+</li>
+<li><p>验证</p>
+<blockquote>
+<p>验证是连接阶段的第一步，这个阶段的目的是确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。<br>验证分四个阶段</p>
+</blockquote>
+<ol>
+<li><p>文件格式验证（对象：字节流）</p>
+<ul>
+<li>是否以魔数OxCAFEBABE开头</li>
+<li>主次版本是否在当前虚拟机处理的范围</li>
+<li>常量池中的常量中是否有不被支持的常量类型（检查常量的tag标志）</li>
+<li>指向常量的各种索引值中是否有指向不存在的常量或不符合类型的常量。</li>
+<li>CONSTANT_Utf8_info型的常量中是否有不符合UTF8编码的数据。</li>
+<li>Class文件中各部分及文件本身是否有被删除的或附加的其它信息。</li>
+<li><p>……</p>
+<p>验证完后，字节流才会进入内存的方法区中进行存储。</p>
+</li>
+</ul>
+</li>
+<li><p>元数据验证（对象：方法区的存储结构）</p>
+<ul>
+<li>这个类是否有父类。</li>
+<li>这个类的父类是否继承了不允许被继承的类（被final修饰的类）。</li>
+<li>如果这个类不是抽象类，是否实现了其父类或接口之中要求实现的所有方法。</li>
+<li>类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的final字段，或者出现了不符合规则的方法的重载，例如方法参数都一致，但返回值类型不一致等）</li>
+<li><p>……</p>
+<p>这个阶段主要目的是对类的元数据信息进行语义校验，保证不存在不符合Java语言规定的元数据信息。</p>
+</li>
+</ul>
+</li>
+<li><p>字节码验证（对象：方法区的存储结构）</p>
+<ul>
+<li>保证任意时刻操作数栈的数据类型与指令代码序列都能配合工作，例如不会出现类似这样的情况：在操作栈中放置了一个int类型的数据，使用时却按long类型来载入本地变量表。</li>
+<li>保证跳转指令不会跳转到方法体以外的字节码指令上。</li>
+<li>保证方法体的类型转换是有效的，例如可以把一个子类对象赋值给父类数据类型，这是安全的，但是吧父类对象赋值给子类数据类型，甚至给与它毫无继承关系，完成无相关的一个数据类型，则是不安全的。</li>
+<li><p>……</p>
+<p>这个阶段主要目的是对类的方法体进行校验分析，保证被校验类的方法在运行时不会做出危害虚拟机安全的事件。</p>
+</li>
+</ul>
+</li>
+<li>符号引用验证（对象：方法区的存储结构）<br> 符号引用验证可以看做是对类自身以外（常量池中的各种符号引用）的信息进行匹配性校验<ul>
+<li>符号引用中通过字符串描述的全限定名是否能找到相应的类。</li>
+<li>在指定的类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段。</li>
+<li>符合引用中的类、字段、方法的访问性（private、protected、public、default）是否可以被当前类访问。</li>
+<li>……</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>准备<br>  准备阶段是正式为类变量（被static修饰的变量）分配内存并设置类变量初始值的阶段，这些变量所使用的内存都将在方法区进行分配。</p>
+<blockquote>
+<p>例如：</p>
+<pre><code>public static int value=110;
+在方法区对value进行内存分配，并设置初始值为0，而不是110。
+public static **final** int value=110;
+在方法区对value进行内存分配，并设置初始值为110，而不是0。
+因为类字段的字段属性表中存在ConstantValue属性。
+</code></pre></blockquote>
+</li>
+<li><p>解析<br>  将常量池中的符合引用转化为直接引用。</p>
+<blockquote>
+<p>符号引用和直接引用的定义</p>
+</blockquote>
+<ul>
+<li><p>符号引用以一组符号来描述目标，引用的目标不一定已经加载到内存中，各种虚拟机接受符号引用必须得一致，因为符号引用的字面量形式明确定义在Java虚拟机规范的Class文件格式中。</p>
+</li>
+<li><p>直接引用一定加载到内存中，因为它与内存是有关系的，直接引用直接指向目标的指针、相对偏移量、句柄等。</p>
+</li>
+</ul>
+</li>
+<li><p>初始化</p>
+<blockquote>
+<p>初始化的5种情况</p>
+</blockquote>
+<ol>
+<li>遇到new、getstatic、setstatic、invokestatic,对应的意思是使用new关键字实例化对象、读取或设置类的静态字段(被final修饰、已在编译期把结果放入常量池的静态字段除外)、调用一个类的静态方法的时候。 </li>
+<li>使用java.lang.reflect类中的方法对类进行反射调用的时候，如果类没有进行初始化，则需要先触发其初始化。</li>
+<li>当初始化一个类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类的初始化。</li>
+<li>当虚拟机启动的时候，用户需要指定一个要执行的主类的时候，虚拟机会先初始化这个主类。</li>
+<li>当使用JDK1.7的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解析结果REF_getStatic、REF_putStatic、REF_invokeStatic的方法句柄，并且这个方法句柄所对应的类没有进行过初始化，则需要先触发其初始化。</li>
+</ol>
+</li>
+</ul>
+<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><h4 id="Boostrap-ClassLoader"><a href="#Boostrap-ClassLoader" class="headerlink" title="Boostrap ClassLoader"></a>Boostrap ClassLoader</h4><h4 id="Extension-ClassLoader"><a href="#Extension-ClassLoader" class="headerlink" title="Extension ClassLoader"></a>Extension ClassLoader</h4><h4 id="Application-ClassLoader"><a href="#Application-ClassLoader" class="headerlink" title="Application ClassLoader"></a>Application ClassLoader</h4><h3 id="双亲委托机制"><a href="#双亲委托机制" class="headerlink" title="双亲委托机制"></a>双亲委托机制</h3>
           
         
       
