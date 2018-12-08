@@ -462,97 +462,92 @@ public void testOutOfMemoryError() {
 </blockquote>
 <blockquote>
 <p>引用分类</p>
-<ul>
-<li>强引用</li>
-<li>软引用</li>
-<li>弱引用</li>
-<li>虚引用</li>
-</ul>
 </blockquote>
-<h3 id="垃圾回收器的介绍"><a href="#垃圾回收器的介绍" class="headerlink" title="垃圾回收器的介绍"></a>垃圾回收器的介绍</h3><ul>
-<li><p>Serial收集器</p>
-<p>  是一个最基本、历史悠久的收集器，单线程，会暂停其它所有线程，直到垃圾回收完成（Stop the World!）</p>
+<ul>
+<li><p>强引用<br>  永远不会清除强引用的对象，如Object o=new Object()这类引用。</p>
+</li>
+<li><p>软引用<br>  还有用但并非必需的对象。在发生内存溢出异常之前，会将这些对象列进入回收范围内进行第二次回收。使用SoftReference类来实现软引用。</p>
+<pre><code>Object object = new Object();
+SoftReference&lt;Object&gt; sReference = new SoftReference&lt;Object&gt;(object);
+object = null;  
+</code></pre></li>
+<li><p>弱引用<br>  非必需的对象。只能生存到下一次垃圾收集之前。使用WeakReference类来实现弱引用。</p>
+<pre><code>Object object = new Object();
+WeakReference&lt;Object&gt; wReference = new WeakReference&lt;Object&gt;(object);
+object = null;  
+</code></pre></li>
+<li><p>虚引用<br>  又称幽灵引用或者幻影引用，最弱的一种引用。不会对其生存时间构成影响。只能在被回收的时候收到一个系统的通知。使用PhantomReference类来实现虚引用。</p>
+<pre><code>Object object = new Object();
+PhantomReference&lt;Object&gt; pReference = new PhantomReference&lt;Object&gt;(object);
+object = null;  
+</code></pre></li>
+</ul>
+<h3 id="垃圾回收器的介绍"><a href="#垃圾回收器的介绍" class="headerlink" title="垃圾回收器的介绍"></a>垃圾回收器的介绍</h3><h4 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h4><p>是一个最基本、历史悠久的收集器，单线程，会暂停其它所有线程，直到垃圾回收完成（Stop the World!）</p>
 <blockquote>
 <p>对于运行在Client下的虚拟机来说是很好的选择，简单而高效，没有线程交互产生的开销。</p>
 </blockquote>
-</li>
-<li><p>ParNew收集器</p>
-<p>  是Serial的多线程版本，大部分实现代码是一样的。</p>
+<h4 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h4><p>是Serial的多线程版本，大部分实现代码是一样的。</p>
 <blockquote>
 <p>以上两种新生代收集器是唯一能够和CMS配合使用的收集器<br>均使用复制算法。</p>
 </blockquote>
-</li>
-<li><p>Serial Old(MSC)收集器<br>  Serial的老年代版收集器，使用标记-整理算法。</p>
+<h4 id="Serial-Old-MSC-收集器"><a href="#Serial-Old-MSC-收集器" class="headerlink" title="Serial Old(MSC)收集器"></a>Serial Old(MSC)收集器</h4><p>Serial的老年代版收集器，使用标记-整理算法。</p>
 <blockquote>
 <p>可以搭配Parallel Scavenge使用，或者作为CMS失败的后备方案</p>
 </blockquote>
-</li>
-<li><p>Parallel Old 收集器<br>  Parallel的老年代版收集器，使用标记-整理算法。</p>
+<h4 id="Parallel-Old-收集器"><a href="#Parallel-Old-收集器" class="headerlink" title="Parallel Old 收集器"></a>Parallel Old 收集器</h4><p>Parallel的老年代版收集器，使用标记-整理算法。</p>
 <blockquote>
 <p>注重CPU资源敏感和吞吐量的场合可以考虑Parallel Old 结合Parallel Scavenge。</p>
 </blockquote>
-</li>
-<li><p>Parallel Scavenge收集器（吞吐量优先）</p>
-<p>  是一个新生代收集器，主要关注点在吞吐量（既运行代码时间/（运行代码时间+垃圾收集时间））</p>
+<h4 id="Parallel-Scavenge收集器（吞吐量优先）"><a href="#Parallel-Scavenge收集器（吞吐量优先）" class="headerlink" title="Parallel Scavenge收集器（吞吐量优先）"></a>Parallel Scavenge收集器（吞吐量优先）</h4><p>是一个新生代收集器，主要关注点在吞吐量（既运行代码时间/（运行代码时间+垃圾收集时间））</p>
 <blockquote>
 <p>例如：虚拟机总运行100分钟，垃圾回收需要花费10分钟，那么吞吐量就是90%<br>适合不需要交互的后台任务<br>与ParNew的区别在于它可以使用GC自适应的调节策略，通过输入参数 <strong>-XX:UseAdaptiveSizePolicy</strong> 虚拟机会根据当前系统运行的情况收集性能监控，自动调节新生代的大小（<strong>-Xmn</strong>）、Eden与Survivor区的比例（<strong>-XX:SurvivorRatio</strong>）、晋升老年代对象大小（<strong>-XX:PretenureSizeThreshold</strong>）等参数。</p>
 </blockquote>
-</li>
-<li><p>CMS（Concurrent Mark Sweep）收集器</p>
-<p>  是以最短回收时间为目标的老年代收集器。<br>  算法使用标记-清除算法，会产生内存碎片。<br>  回收分为几个过程：</p>
+<h4 id="CMS（Concurrent-Mark-Sweep）收集器"><a href="#CMS（Concurrent-Mark-Sweep）收集器" class="headerlink" title="CMS（Concurrent Mark Sweep）收集器"></a>CMS（Concurrent Mark Sweep）收集器</h4><p>是以最短回收时间为目标的老年代收集器。<br>算法使用标记-清除算法，会产生内存碎片。<br>回收分为几个过程：</p>
 <ol>
 <li>初始标记(标记GC Roots 能直接关联的对象)。</li>
 <li>并发标记(进行GC Roots Tracing)。</li>
 <li>重新标记(修正并发标记期间因用户程序操作而产生变动的那部分对象的标记记录)。</li>
-<li><p>并发清除。</p>
+<li>并发清除。</li>
+</ol>
 <blockquote>
 <p>注：初始标记和重新标记会Stop the World，并发标记和并发清除不会停顿。</p>
 </blockquote>
 <p>缺点：</p>
-</li>
-</ol>
 <ul>
 <li>对CPU资源敏感，吞吐量不高。</li>
 <li>无法处理‘浮动垃圾’，可能出现‘Concurrent Mode Failure’,从而导致另一次的Full GC产生。</li>
-<li>使用标记-清除算法会产生大量内存碎片。</li>
+<li>使用标记-清除算法会产生大量内存碎片。<h4 id="G1-Garbage-First-收集器"><a href="#G1-Garbage-First-收集器" class="headerlink" title="G1(Garbage-First)收集器"></a>G1(Garbage-First)收集器</h4></li>
 </ul>
-</li>
-<li><p>G1(Garbage-First)收集器<br>  相对于之前几个收集器，有很大的区别</p>
+<p>相对于之前几个收集器，有很大的区别</p>
 <ol>
 <li>不仅仅对于新生代或者老年代一个对象，而是把内存划分为Region,可以单独管理内存。</li>
 <li>全局使用标记-整理，局部(Region之间)使用复制。</li>
-<li><p>清理可预测性，通过跟踪每个Region内垃圾堆积的经验价值，在后台构建一个列表，每次垃圾回收，清理价值高的内存，以提高清理效率。</p>
+<li>清理可预测性，通过跟踪每个Region内垃圾堆积的经验价值，在后台构建一个列表，每次垃圾回收，清理价值高的内存，以提高清理效率。</li>
+</ol>
 <p>运作步骤：</p>
-</li>
+<ol>
 <li>初始标记(标记GC Roots 能直接关联的对象)。</li>
 <li>并发标记(进行GC Roots Tracing)。</li>
 <li>最终标记(修正并发标记期间因用户程序操作而产生变动的那部分对象的标记记录)。</li>
-<li>筛选回收(对回收对象进行排序，在有限的条件下尽可能回收更多的内存对象)<h3 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h3></li>
+<li>筛选回收(对回收对象进行排序，在有限的条件下尽可能回收更多的内存对象)</li>
 </ol>
+<h3 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h3><h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><ol>
+<li><p>对象优先在Eden分配<br> 当Eden无法存放对象的时候，会触发Minor GC,发生GC的时候，如果存活的对象在Survivor中没有空间进行存储，超出的部分会直接通过担保机制进入老年代。</p>
 </li>
-<li><p>内存分配</p>
-<ol>
-<li>对象优先在Eden分配<br> 当Eden无法存放对象的时候，会触发Minor GC,发生GC的时候，如果存活的对象在Survivor中没有空间进行存储，超出的部分会直接通过担保机制进入老年代。</li>
-<li>大对象直接进入老年代<br> 大对象指的是需要连续空间的对象，如长字符串、byte[]数组等。</li>
-<li>长期存活的对象将进入老年代<br> 默认老年代的年龄是15，但是，有些对象也不必到15就能进入老年代。如果在Survivor中相同年龄的对象大于总空间的一半，那么大于这个年龄的所有对象将进入老年代。</li>
+<li><p>大对象直接进入老年代<br> 大对象指的是需要连续空间的对象，如长字符串、byte[]数组等。</p>
+</li>
+<li><p>长期存活的对象将进入老年代</p>
+<p> 默认老年代的年龄是15，但是，有些对象也不必到15就能进入老年代。如果在Survivor中相同年龄的对象大于总空间的一半，那么大于这个年龄的所有对象将进入老年代。</p>
+</li>
 </ol>
-</li>
-</ul>
 <hr>
 <h2 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h2><p>类加载的生命周期： 加载、验证、准备、解析、初始化、使用、卸载.<br>加载、验证、准备、初始化、卸载这五个阶段的顺序是一定的。</p>
-<h3 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h3><ul>
-<li><p>加载</p>
-<blockquote>
-<p>在加载阶段，虚拟机要完成三件事情</p>
-</blockquote>
-<ol>
-<li>通过一个类的全限定名来获取定义此类的二进制字节流。</li>
-<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。</li>
-<li>在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。</li>
-</ol>
-</li>
-<li><p>验证</p>
-<blockquote>
+<h3 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h3><h4 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h4><pre><code>&gt; 在加载阶段，虚拟机要完成三件事情
+
+1. 通过一个类的全限定名来获取定义此类的二进制字节流。
+2. 将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。
+3. 在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。
+</code></pre><h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><blockquote>
 <p>验证是连接阶段的第一步，这个阶段的目的是确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。<br>验证分四个阶段</p>
 </blockquote>
 <ol>
@@ -568,48 +563,47 @@ public void testOutOfMemoryError() {
 <p>验证完后，字节流才会进入内存的方法区中进行存储。</p>
 </li>
 </ul>
-</li>
+<ol start="2">
 <li><p>元数据验证（对象：方法区的存储结构）</p>
 <ul>
 <li>这个类是否有父类。</li>
 <li>这个类的父类是否继承了不允许被继承的类（被final修饰的类）。</li>
 <li>如果这个类不是抽象类，是否实现了其父类或接口之中要求实现的所有方法。</li>
 <li>类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的final字段，或者出现了不符合规则的方法的重载，例如方法参数都一致，但返回值类型不一致等）</li>
-<li><p>……</p>
+<li>……</li>
+</ul>
 <p>这个阶段主要目的是对类的元数据信息进行语义校验，保证不存在不符合Java语言规定的元数据信息。</p>
 </li>
-</ul>
+</ol>
 </li>
 <li><p>字节码验证（对象：方法区的存储结构）</p>
 <ul>
 <li>保证任意时刻操作数栈的数据类型与指令代码序列都能配合工作，例如不会出现类似这样的情况：在操作栈中放置了一个int类型的数据，使用时却按long类型来载入本地变量表。</li>
 <li>保证跳转指令不会跳转到方法体以外的字节码指令上。</li>
-<li>保证方法体的类型转换是有效的，例如可以把一个子类对象赋值给父类数据类型，这是安全的，但是吧父类对象赋值给子类数据类型，甚至给与它毫无继承关系，完成无相关的一个数据类型，则是不安全的。</li>
-<li><p>……</p>
+<li><p>保证方法体的类型转换是有效的，例如可以把一个子类对象赋值给父类数据类型，这是安全的，但是吧父类对象赋值给子类数据类型，甚至给与它毫无继承关系，完成无相关的一个数据类型，则是不安全的。</p>
+<ul>
+<li>……</li>
+</ul>
 <p>这个阶段主要目的是对类的方法体进行校验分析，保证被校验类的方法在运行时不会做出危害虚拟机安全的事件。</p>
 </li>
 </ul>
 </li>
-<li>符号引用验证（对象：方法区的存储结构）<br> 符号引用验证可以看做是对类自身以外（常量池中的各种符号引用）的信息进行匹配性校验<ul>
+<li><p>符号引用验证（对象：方法区的存储结构）<br> 符号引用验证可以看做是对类自身以外（常量池中的各种符号引用）的信息进行匹配性校验</p>
+<ul>
 <li>符号引用中通过字符串描述的全限定名是否能找到相应的类。</li>
 <li>在指定的类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段。</li>
-<li>符合引用中的类、字段、方法的访问性（private、protected、public、default）是否可以被当前类访问。</li>
+<li>符合引用中的类、字段、方法的访问性（private、protected、public、default）是否可以被当前类访问。<ul>
 <li>……</li>
 </ul>
 </li>
+</ul>
+</li>
 </ol>
-</li>
-<li><p>准备<br>  准备阶段是正式为类变量（被static修饰的变量）分配内存并设置类变量初始值的阶段，这些变量所使用的内存都将在方法区进行分配。</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><p>准备阶段是正式为类变量（被static修饰的变量）分配内存并设置类变量初始值的阶段，这些变量所使用的内存都将在方法区进行分配。</p>
 <blockquote>
-<p>例如：</p>
-<pre><code>public static int value=110;
-在方法区对value进行内存分配，并设置初始值为0，而不是110。
-public static **final** int value=110;
-在方法区对value进行内存分配，并设置初始值为110，而不是0。
-因为类字段的字段属性表中存在ConstantValue属性。
-</code></pre></blockquote>
-</li>
-<li><p>解析<br>  将常量池中的符合引用转化为直接引用。</p>
+<p>例如：<br>public static int value=110;<br>在方法区对value进行内存分配，并设置初始值为0，而不是110。<br>public static <strong>final</strong> int value=110;<br>在方法区对value进行内存分配，并设置初始值为110，而不是0。<br>因为类字段的字段属性表中存在ConstantValue属性。</p>
+</blockquote>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>将常量池中的符合引用转化为直接引用。</p>
 <blockquote>
 <p>符号引用和直接引用的定义</p>
 </blockquote>
@@ -619,8 +613,7 @@ public static **final** int value=110;
 <li><p>直接引用一定加载到内存中，因为它与内存是有关系的，直接引用直接指向目标的指针、相对偏移量、句柄等。</p>
 </li>
 </ul>
-</li>
-<li><p>初始化</p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>初始化是类加载的最后一步，是真正执行类中定义的Java执行代码，执行类构造器&lt;<strong>clinit</strong>&gt;()方法的过程。</p>
 <blockquote>
 <p>初始化的5种情况</p>
 </blockquote>
@@ -631,9 +624,52 @@ public static **final** int value=110;
 <li>当虚拟机启动的时候，用户需要指定一个要执行的主类的时候，虚拟机会先初始化这个主类。</li>
 <li>当使用JDK1.7的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解析结果REF_getStatic、REF_putStatic、REF_invokeStatic的方法句柄，并且这个方法句柄所对应的类没有进行过初始化，则需要先触发其初始化。</li>
 </ol>
+<blockquote>
+<p>&lt;<strong>clinit</strong>&gt;()方法如何产生</p>
+</blockquote>
+<ol>
+<li><p>由编译器自动收集所有类变量的赋值动作和静态语句块（static{}块）中的语句合并产生。在前面的静态语句块可以赋值，但不能访问后面的变量。</p>
+<pre><code>public class Test {
+    static {
+        i=110;//可以给后面的变量赋值
+        System.out.println(i);//报错，不能访问后面的变量
+    }
+    static int i=0;
+}
+</code></pre></li>
+<li><p>会先执行父类的&lt;<strong>clinit</strong>&gt;()方法，不用显示调用。所以虚拟机第一个加载&lt;<strong>clinit</strong>&gt;()方法是java.lang.Object类的。</p>
 </li>
-</ul>
-<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><h4 id="Boostrap-ClassLoader"><a href="#Boostrap-ClassLoader" class="headerlink" title="Boostrap ClassLoader"></a>Boostrap ClassLoader</h4><h4 id="Extension-ClassLoader"><a href="#Extension-ClassLoader" class="headerlink" title="Extension ClassLoader"></a>Extension ClassLoader</h4><h4 id="Application-ClassLoader"><a href="#Application-ClassLoader" class="headerlink" title="Application ClassLoader"></a>Application ClassLoader</h4><h3 id="双亲委托机制"><a href="#双亲委托机制" class="headerlink" title="双亲委托机制"></a>双亲委托机制</h3>
+<li><p>由于会先执行父类的 &lt;<strong>clinit</strong>&gt;()方法，所以父类的静态块会优先于子类的。</p>
+<pre><code>class Test{
+    static class ParentTest {
+        public static int i=0;
+        static {
+            i=110;
+        }
+
+    }
+    static class  SubTest extends ParentTest {
+        public static int j=i;
+    }
+    public static void main(String[] args) {
+        System.out.println(SubTest.j);
+    }
+}
+</code></pre><p> 会输出110，因为父类的静态块会优先加载，i不是0而是110了，再赋值给j,j就变成110。</p>
+</li>
+<li><p>没有静态语句块的类，不会产生&lt;<strong>clinit</strong>&gt;()方法。</p>
+</li>
+<li><p>执行接口&lt;<strong>clinit</strong>&gt;()方法不会先执行父接口的&lt;<strong>clinit</strong>&gt;()方法，这点和类不一样，父接口的变量被使用时才会执行&lt;<strong>clinit</strong>&gt;()方法，接口的实现类在初始化的时候也不会执行这个接口的&lt;<strong>clinit</strong>&gt;()方法。</p>
+</li>
+<li><p>并发执行一个类的&lt;<strong>clinit</strong>&gt;()方法时，会进行堵塞操作，保证被正确的加锁、同步。</p>
+</li>
+</ol>
+<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><h4 id="Boostrap-ClassLoader"><a href="#Boostrap-ClassLoader" class="headerlink" title="Boostrap ClassLoader"></a>Boostrap ClassLoader</h4><p>启动类加载器，负责将%JAVA_HOME%/lib目录或被-Xbootclasspath参数所指定的路径的类（并且是虚拟机识别的）加载到内存。</p>
+<h4 id="Extension-ClassLoader"><a href="#Extension-ClassLoader" class="headerlink" title="Extension ClassLoader"></a>Extension ClassLoader</h4><p>扩展类加载器，负责加载%JAVA_HOME%/lib/ext下或者被java.ext.dirs系统变量所指定的路径下的类到内存。</p>
+<h4 id="Application-ClassLoader"><a href="#Application-ClassLoader" class="headerlink" title="Application ClassLoader"></a>Application ClassLoader</h4><p>应用程序类加载器，也叫系统类加载器，负责加载用户路径（ClassPath）上指定的类库。</p>
+<h3 id="双亲委托机制"><a href="#双亲委托机制" class="headerlink" title="双亲委托机制"></a>双亲委托机制</h3><p>双亲委托机制很好理解，如果一个类加载器收到类加载的请求，会把这个请求委派给父类加载器去完成，父类又委派给父类加载器，最后第一个加载器都是最顶端的启动类加载器先加载，保证了本身的安全性。</p>
+<hr>
+
           
         
       
