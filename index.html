@@ -281,6 +281,376 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/常见算法题/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="江南小俊">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="江南小俊">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/常见算法题/" itemprop="url">常见算法题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-22T12:35:45+08:00">
+                2018-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/常见算法题/" class="leancloud_visitors" data-flag-title="常见算法题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="猫狗队列"><a href="#猫狗队列" class="headerlink" title="猫狗队列"></a>猫狗队列</h3><p>宠物、狗、猫的类如下，<br>实现一种猫狗队列的结构，要求</p>
+<ul>
+<li>用户可以调用add方法将cat类或者dog类实例放入队列中。</li>
+<li>用户可以调用pollAll方法，将队列中所有的实例按照进队列的先后顺序依次弹出。</li>
+<li>用户可以调用pollDog方法，将队列中的所有狗类实例按照进队列的先后顺序依次弹出。</li>
+<li>用户可以调用pollCat方法，将队列中的所有猫类实例按照进队列的先后顺序依次弹出。</li>
+<li>用户可以调用isEmpty方法，检查队列中是否有dog或cat的实例。</li>
+<li>用户可以调用isDogEmpty方法，检查队列中是否有dog的实例。</li>
+<li>用户可以调用isCatEmpty方法，检查队列中是否有cat的实例。</li>
+</ul>
+<h4 id="宠物类"><a href="#宠物类" class="headerlink" title="宠物类"></a>宠物类</h4><pre><code>/**
+* @ClassName Pet
+* @Description 宠物类
+* @Author 江南小俊
+* @Date 2018/12/22 11:04
+* @Version 1.0.0
+**/
+public class Pet
+{
+private String type;
+
+    public Pet(String type) {
+        this.type=type;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
+</code></pre><h4 id="狗类"><a href="#狗类" class="headerlink" title="狗类"></a>狗类</h4><pre><code>/**
+* @ClassName Dog
+* @Description 狗类
+* @Author 江南小俊
+* @Date 2018/12/22 11:08
+* @Version 1.0.0
+**/
+public class Dog extends  Pet {
+    public Dog() {
+        super(&quot;dog&quot;);
+    }
+}
+</code></pre><h4 id="猫类"><a href="#猫类" class="headerlink" title="猫类"></a>猫类</h4><pre><code>/**
+* @ClassName Cat
+* @Description 猫类
+* @Author 江南小俊
+* @Date 2018/12/22 11:06
+* @Version 1.0.0
+**/
+public class Cat extends Pet {
+    public Cat() {
+        super(&quot;cat&quot;);
+    }
+}
+</code></pre><p>思路：把猫狗类封装到PetEnterQueue类中，使用一个计数器记录进入队列的顺序。</p>
+<h4 id="封装猫狗类，使用count先后顺序"><a href="#封装猫狗类，使用count先后顺序" class="headerlink" title="封装猫狗类，使用count先后顺序"></a>封装猫狗类，使用count先后顺序</h4><pre><code>package top.myjnxj.catdogqueue;
+
+/**
+* @ClassName PetEnterQueue
+* @Description 封装猫狗类，使用count先后顺序
+* @Author 江南小俊
+* @Date 2018/12/22 11:21
+* @Version 1.0.0
+**/
+public class PetEnterQueue {
+    private Pet pet;
+    private long count;
+
+    public PetEnterQueue(Pet pet, long count) {
+        this.pet = pet;
+        this.count = count;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public long getCount() {
+        return count;
+    }
+}
+</code></pre><h4 id="封装猫狗队列"><a href="#封装猫狗队列" class="headerlink" title="封装猫狗队列"></a>封装猫狗队列</h4><pre><code>package top.myjnxj.catdogqueue;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+* @ClassName CatDogQueue
+* @Description 封装猫狗队列
+* @Author 江南小俊
+* @Date 2018/12/22 11:11
+* @Version 1.0.0
+**/
+public class CatDogQueue {
+    private Queue&lt;PetEnterQueue&gt; dogQueue;
+    private Queue&lt;PetEnterQueue&gt; catQueue;
+    private long count = 0;
+
+    public CatDogQueue() {
+        this.dogQueue = new LinkedList&lt;&gt;();
+        this.catQueue = new LinkedList&lt;&gt;();
+        this.count = 0;
+    }
+
+    /**
+    * add方法先判断宠物类属于猫还是狗，分别构造为PetEnterQueue实例，添加到相应的队列中
+    * @param pet
+    */
+    public void add(Pet pet) {
+        if (pet instanceof Cat) {
+            catQueue.add(new PetEnterQueue(pet, ++count));
+        } else if (pet instanceof Dog) {
+            dogQueue.add(new PetEnterQueue(pet, ++count));
+        } else {
+
+        }
+    }
+
+    /**
+    * pollAll方法先判断猫和狗队列是否为空，再通过判断队首的元素的count大小，小的先出列
+    * @return
+    */
+    public Pet pollAll() {
+        if (!dogQueue.isEmpty() &amp;&amp; !catQueue.isEmpty()) {
+            if (dogQueue.peek().getCount() &lt; catQueue.peek().getCount()) {
+                return dogQueue.poll().getPet();
+            } else {
+                return catQueue.poll().getPet();
+            }
+
+        } else if (!dogQueue.isEmpty()) {
+            return dogQueue.poll().getPet();
+        } else if (!catQueue.isEmpty()) {
+            return catQueue.poll().getPet();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * 直接判断狗队列，队首出列
+    * @return
+    */
+    public Dog pollDog() {
+        if (!dogQueue.isEmpty()) {
+            return (Dog) dogQueue.poll().getPet();
+        } else {
+            return null;
+        }
+    }
+    /**
+    * 直接判断猫队列，队首出列
+    * @return
+    */
+    public Cat pollCat() {
+        if (!catQueue.isEmpty()) {
+            return (Cat) catQueue.poll().getPet();
+        } else {
+            return null;
+        }
+    }
+
+    public boolean isEmpty() {
+        return dogQueue.isEmpty() &amp;&amp; catQueue.isEmpty();
+    }
+
+    public boolean isDogEmpty() {
+        return dogQueue.isEmpty();
+    }
+
+    public boolean isCatEmpty() {
+        return catQueue.isEmpty();
+    }
+}
+</code></pre><h4 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h4><pre><code>package top.myjnxj.catdogqueue;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class CatDogQueueTest {
+    CatDogQueue queue;
+    @Before
+    public void setUp() throws Exception {
+        queue=new CatDogQueue();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+    }
+
+    @Test
+    public void add() {
+        queue.add(new Dog());
+        Assert.assertNotNull(queue.pollAll());
+    }
+
+    @Test
+    public void pollAll() {
+        queue.add(new Dog());
+        queue.add(new Cat());
+        Assert.assertEquals(new Dog().getType(),queue.pollAll().getType());
+        Assert.assertEquals(new Cat().getType(),queue.pollAll().getType());
+    }
+
+    @Test
+    public void pollDog() {
+        queue.add(new Dog());
+        queue.add(new Cat());
+        Assert.assertEquals(new Dog().getType(),queue.pollDog().getType());
+    }
+
+    @Test
+    public void pollCat() {
+        queue.add(new Cat());
+        queue.add(new Dog());
+        Assert.assertEquals(new Cat().getType(),queue.pollCat().getType());
+    }
+
+    @Test
+    public void isEmpty() {
+        queue.add(new Cat());
+        Assert.assertEquals(false,queue.isEmpty());
+    }
+
+    @Test
+    public void isDogEmpty() {
+        queue.add(new Cat());
+        Assert.assertEquals(true,queue.isDogEmpty());
+    }
+
+    @Test
+    public void isCatEmpty() {
+        queue.add(new Dog());
+        Assert.assertEquals(true,queue.isCatEmpty());
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/八大排序/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -569,7 +939,16 @@ public class QuickSort {
       
         
           
-            
+            <blockquote>
+<p>策略模式</p>
+</blockquote>
+<pre><code>定义：定义一系列算法，使得它们可以互换。
+
+案例：
+</code></pre><blockquote>
+<p>观察者模式</p>
+</blockquote>
+
           
         
       
@@ -864,587 +1243,6 @@ public class QuickSort {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/剑指offer/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="江南小俊">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="江南小俊">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/剑指offer/" itemprop="url">剑指offer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T14:15:19+08:00">
-                2018-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/剑指offer/" class="leancloud_visitors" data-flag-title="剑指offer">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="整理在牛客网刷剑指offer的解题代码。"><a href="#整理在牛客网刷剑指offer的解题代码。" class="headerlink" title="整理在牛客网刷剑指offer的解题代码。"></a>整理在牛客网刷剑指offer的解题代码。</h2><hr>
-<h3 id="二维数组中的查找"><a href="#二维数组中的查找" class="headerlink" title="二维数组中的查找"></a>二维数组中的查找</h3><blockquote>
-<p>时间限制：1s 空间：32768k</p>
-</blockquote>
-<p>题目描述<br>在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
-<pre><code>public class Solution {
-    public boolean Find(int target, int [][] array) {
-        boolean hasTarget=false;      
-        for(int i=0;i&lt;array.length;i++){
-                for(int j=0;j&lt;array[i].length;j++){
-                    if(array[i][j]==target){
-                        hasTarget=true;
-                        break;
-                    }
-                }
-            }
-        return hasTarget;
-    }
-}
-</code></pre><h3 id="替换空格"><a href="#替换空格" class="headerlink" title="替换空格"></a>替换空格</h3><blockquote>
-<p>时间限制：1s 空间：32768k</p>
-</blockquote>
-<p>题目描述<br>请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</p>
-<pre><code>public class Solution {
-    public String replaceSpace(StringBuffer str) {
-        StringBuffer newStr=new StringBuffer();
-        char[] base=str.toString().toCharArray();
-        for(int i=0;i&lt;base.length;i++){
-            if((base[i]+&quot;&quot;).equals(&quot; &quot;)){
-                newStr.append(&quot;%20&quot;);
-            }else{
-                newStr.append(base[i]);
-            }
-        }
-        return newStr.toString();
-    }
-}
-</code></pre><h3 id="从尾到头打印链表"><a href="#从尾到头打印链表" class="headerlink" title="从尾到头打印链表"></a>从尾到头打印链表</h3><blockquote>
-<p>时间限制：1s 空间：32768k</p>
-</blockquote>
-<p>题目描述<br>输入一个链表，按链表值从尾到头的顺序返回一个ArrayList。</p>
-<pre><code>/**
-*    public class ListNode {
-*        int val;
-*        ListNode next = null;
-*
-*        ListNode(int val) {
-*            this.val = val;
-*        }
-*    }
-*
-*/
-import java.util.ArrayList;
-import java.util.Stack;
-public class Solution {
-    public ArrayList&lt;Integer&gt; printListFromTailToHead(ListNode listNode) {
-    Stack&lt;Integer&gt; stack=new Stack&lt;&gt;();
-        while(listNode!=null){
-            stack.push(listNode.val);
-            listNode=listNode.next;
-        }
-        ArrayList&lt;Integer&gt; result=new ArrayList&lt;&gt;();
-        while(!stack.isEmpty()){
-            result.add(stack.pop());
-        }
-        return result;
-    }
-}
-</code></pre><h3 id="用两个栈实现队列"><a href="#用两个栈实现队列" class="headerlink" title="用两个栈实现队列"></a>用两个栈实现队列</h3><blockquote>
-<p>时间限制：1s 空间：32768k</p>
-</blockquote>
-<p>题目描述<br>用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。</p>
-<pre><code>import java.util.Stack;
-/**
-*用一个栈作为基准，另一个作为辅助
-*存在基准栈，
-*取，先把基准栈的元素存进辅助栈，再从辅助栈中弹出栈顶的元素为所求元素，再把剩余元素返回基准栈
-**/
-public class Solution {
-    Stack&lt;Integer&gt; stack1 = new Stack&lt;Integer&gt;();
-    Stack&lt;Integer&gt; stack2 = new Stack&lt;Integer&gt;();
-
-    public void push(int node) {
-        stack1.push(node);
-    }
-
-    public int pop() {
-        while(!stack1.isEmpty()){
-            stack2.push(stack1.pop());
-        }
-        int result=  stack2.pop();
-        while(!stack2.isEmpty()){
-            stack1.push(stack2.pop());
-        } 
-        return result;
-    }
-}
-</code></pre><h3 id="旋转数组的最小数字"><a href="#旋转数组的最小数字" class="headerlink" title="旋转数组的最小数字"></a>旋转数组的最小数字</h3><blockquote>
-<p>时间限制：3秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 输入一个非减排序的数组的一个旋转，输出旋转数组的最小元素。 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。</p>
-<pre><code>import java.util.ArrayList;
-public class Solution {
-    public int minNumberInRotateArray(int [] array) {
-        int min=array[0];
-        if(array.length==0){
-            return 0;
-        }
-        for(int i=0;i&lt;array.length;i++){
-        if(array[i]&lt;min){
-            min=array[i];
-        }
-
-
-        }
-        return min;
-
-    }
-}
-</code></pre><h3 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项（从0开始，第0项为0）。<br>n&lt;=39</p>
-<pre><code>public class Solution {
-    public int Fibonacci(int n) {
-        int a=1;//n-2
-        int b=1;//n-1
-        int c=a+b;//n
-        if(n==0){
-            return 0;
-        }else if(n&lt;3){
-            return 1;
-        }else{
-            for(int i=3;i&lt;=n;i++){
-                c=a+b;//计算n
-                //n-1、n-2递进
-                a=b;
-                b=c;
-            } 
-            return c;
-        }
-
-    }
-}
-</code></pre><h3 id="矩阵覆盖"><a href="#矩阵覆盖" class="headerlink" title="矩阵覆盖"></a>矩阵覆盖</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>我们可以用2<em>1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2</em>1的小矩形无重叠地覆盖一个2*n的大矩形，总共有多少种方法？</p>
-<pre><code>public class Solution {
-    /**
-    *这题考的也是斐波那契数列
-    **/
-    public int RectCover(int target) {
-            int a=1;//n-2
-            int b=2;//n-1
-            int c=a+b;//n
-        if(target==0){
-            return 0;
-        }else if(target==1){
-            return 1;
-        }else if(target==2){
-            return 2;
-        }else{
-            for(int i=3;i&lt;=target;i++){
-                c=a+b;
-                a=b;
-                b=c;
-            }
-            return c;
-        }
-    }
-}
-</code></pre><h3 id="二进制中1的个数"><a href="#二进制中1的个数" class="headerlink" title="二进制中1的个数"></a>二进制中1的个数</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。</p>
-<pre><code>public class Solution {
-    public int NumberOf1(int n) {
-        return Integer.bitCount(n);
-    }
-}
-</code></pre><h3 id="数值的整数次方"><a href="#数值的整数次方" class="headerlink" title="数值的整数次方"></a>数值的整数次方</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。</p>
-<pre><code>public class Solution {
-    public double Power(double base, int exponent) {
-        return Math.pow(base,exponent);
-    }
-}
-</code></pre><h3 id="调整数组顺序使奇数位于偶数前面"><a href="#调整数组顺序使奇数位于偶数前面" class="headerlink" title="调整数组顺序使奇数位于偶数前面"></a>调整数组顺序使奇数位于偶数前面</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。</p>
-<pre><code>public class Solution {
-    public void reOrderArray(int [] array) {
-        int[] result=new int[array.length]; 
-        int index=0;
-        for(int i=0;i&lt;array.length;i++){
-            if(array[i]%2!=0){
-                result[index++]=array[i];
-            }
-        }
-        for(int i=0;i&lt;array.length;i++){
-            if(array[i]%2==0){
-                result[index++]=array[i];
-            }
-        }
-        for(int i=0;i&lt;result.length;i++){
-            array[i]=result[i];
-        }
-    }
-}
-</code></pre><h3 id="链表中倒数第k个结点"><a href="#链表中倒数第k个结点" class="headerlink" title="链表中倒数第k个结点"></a>链表中倒数第k个结点</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>输入一个链表，输出该链表中倒数第k个结点。</p>
-<pre><code>/*
-public class ListNode {
-    int val;
-    ListNode next = null;
-
-    ListNode(int val) {
-        this.val = val;
-    }
-}*/
-import java.util.Stack;
-public class Solution {
-    public ListNode FindKthToTail(ListNode head,int k) {
-        if(head==null){
-        return null; 
-        }
-                Stack&lt;ListNode&gt; stack=new Stack&lt;&gt;();
-        int size=0;
-                while(head!=null){
-                    stack.push(head);
-                    head=head.next;
-                    size++;
-                }
-        if(size&lt;k||k&lt;=0){
-        return null; 
-        }
-                    int index=1;
-                while(index&lt;k){
-                    stack.pop();
-                    index++;
-                }
-                return stack.pop();
-    }
-}
-</code></pre><h3 id="顺时针打印矩阵"><a href="#顺时针打印矩阵" class="headerlink" title="顺时针打印矩阵"></a>顺时针打印矩阵</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.</p>
-<pre><code>import java.util.ArrayList;
-public class Solution {
-    public ArrayList&lt;Integer&gt; printMatrix(int [][] matrix) {
-        ArrayList&lt;Integer&gt; arr = new ArrayList&lt;Integer&gt;();
-        int up = 0;
-        int left = 0;
-        int down = matrix.length - 1;
-        int right = matrix[0].length - 1;
-
-        while(left&lt;=right &amp;&amp; up&lt;=down){
-
-            for(int i = left ; i &lt;= right ; i++)
-                arr.add(matrix[up][i]);
-            up++;
-            for(int i = up ; i &lt;= down ; i++)
-                arr.add(matrix[i][right]);
-            right--;
-            if(up-1 != down){
-                for(int i = right ; i &gt;= left ; i--)
-                    arr.add(matrix[down][i]);
-            }
-            down--;
-            if(left != right+1){
-                for(int i = down ; i &gt;= up ; i--)
-                    arr.add(matrix[i][left]);
-            }
-            left++;
-        }
-        return arr;
-    }
-}
-</code></pre><h3 id="包含min函数的栈"><a href="#包含min函数的栈" class="headerlink" title="包含min函数的栈"></a>包含min函数的栈</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数（时间复杂度应为O（1））。</p>
-<pre><code>import java.util.Stack;
-
-public class Solution {
-
-    private int min=Integer.MAX_VALUE;
-    private  Stack&lt;Integer&gt; stack=new Stack&lt;&gt;();
-    private  Stack&lt;Integer&gt; minStack=new Stack&lt;&gt;();//存最小
-    private int top=0;
-    public void push(int node) {
-        if(min&gt;node){
-            min=node;
-        }
-        minStack.push(min);
-        stack.push(node);
-
-    }
-
-    public void pop() {
-        if(!stack.isEmpty()){
-        stack.pop();
-        minStack.pop();
-        min=minStack.pop();
-        minStack.push(min);
-        }
-
-    }
-
-    public int top() {
-
-        return stack.peek();
-    }
-
-    public int min() {
-        return min;
-    }
-}
-</code></pre><h3 id="数组中出现次数超过一半的数字"><a href="#数组中出现次数超过一半的数字" class="headerlink" title="数组中出现次数超过一半的数字"></a>数组中出现次数超过一半的数字</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。</p>
-<pre><code>import java.util.Arrays;
-public class Solution {
-    public int MoreThanHalfNum_Solution(int [] array) {
-    if(array.length==1)return array[0];
-        Arrays.sort(array);
-        for(int i=0;i&lt;array.length/2;i++){
-            if(array[i]==array[i+array.length/2]){
-                return array[i];
-                }
-            }
-        return 0;
-    }
-}   
-</code></pre><h3 id="最小的K个数"><a href="#最小的K个数" class="headerlink" title="最小的K个数"></a>最小的K个数</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。</p>
-<pre><code>import java.util.Arrays;
-import java.util.ArrayList;
-public class Solution {
-    public ArrayList&lt;Integer&gt; GetLeastNumbers_Solution(int [] input, int k) {
-
-        Arrays.sort(input);
-        ArrayList&lt;Integer&gt; result=new ArrayList&lt;Integer&gt;();
-    if(k&lt;=0||k&gt;input.length)return result;
-        for(int i=0;i&lt;k;i++){
-            result.add(input[i]);
-            }
-        return result;
-    }
-}
-</code></pre><h3 id="栈的压入、弹出序列"><a href="#栈的压入、弹出序列" class="headerlink" title="栈的压入、弹出序列"></a>栈的压入、弹出序列</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K</p>
-</blockquote>
-<p>题目描述<br>输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）</p>
-<pre><code>import java.util.ArrayList;
-import java.util.Stack;
-/**
-* 这题的思路是遍历整个入栈序列
-* 如12345这个序列，
-* 1.然后判断出栈顺序如45321这个序列中第一个元素4与遍历入栈序列的位置，
-* 2.找到后弹出入栈序列中的4，出栈下标向后移一位到5的位置，
-* 3.123 5321
-* 4.再继续判断
-* 5.发现3！=5，继续遍历，得 1235 5321
-* 6.发现5==5，继续第二步，3==3,2==2,1==1
-*
-*/
-public class Solution {
-    public boolean IsPopOrder(int [] pushA,int [] popA) {
-    if(pushA.length!=popA.length){
-        return false;
-    }
-        //存入栈元素
-        Stack&lt;Integer&gt; stack=new Stack&lt;&gt;();
-        //存出栈数组下标
-        int popAIndex=0;
-        for(int i=0;i&lt;popA.length;i++){
-            stack.push(pushA[i]);
-            while(!stack.isEmpty()&amp;&amp;stack.peek()==popA[popAIndex]){
-                stack.pop();
-                popAIndex++;
-            }
-        }
-        if(stack.isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-}
-</code></pre><h3 id="从上往下打印二叉树"><a href="#从上往下打印二叉树" class="headerlink" title="从上往下打印二叉树"></a>从上往下打印二叉树</h3><blockquote>
-<p>时间限制：1秒 空间限制：32768K    </p>
-</blockquote>
-<p>题目描述<br>从上往下打印出二叉树的每个节点，同层节点从左至右打印。</p>
-<pre><code>import java.util.ArrayList;
-import java.util.Queue;
-import java.util.LinkedList;
-/**
-public class TreeNode {
-    int val = 0;
-    TreeNode left = null;
-    TreeNode right = null;
-
-    public TreeNode(int val) {
-        this.val = val;
-
-    }
-
-}
-*/
-public class Solution {
-    public ArrayList&lt;Integer&gt; PrintFromTopToBottom(TreeNode root) {
-        if(root==null){
-        return new  ArrayList&lt;Integer&gt;();
-        }
-        //存放需遍历的结点
-        Queue&lt;TreeNode&gt; aQueue=new LinkedList();
-        //存放结果结点的顺序
-        Queue&lt;TreeNode&gt; bQueue=new LinkedList();
-        aQueue.add(root);
-        bQueue.add(root);
-        while(!aQueue.isEmpty()){
-            TreeNode treeNode=aQueue.poll();
-            if(treeNode.left!=null){
-                aQueue.add(treeNode.left);
-                bQueue.add(treeNode.left);
-
-            }
-            if(treeNode.right!=null){
-                aQueue.add(treeNode.right);
-                bQueue.add(treeNode.right);
-
-            }
-        }
-        ArrayList&lt;Integer&gt; result=new ArrayList&lt;Integer&gt;(bQueue.size());
-        while(!bQueue.isEmpty()){
-            result.add(bQueue.poll().val);
-        }
-        return result;
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1495,7 +1293,7 @@ public class Solution {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
