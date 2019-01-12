@@ -86,16 +86,17 @@
 
 
 
-<meta name="description" content="以最低的姿态去学习，去汲取宝贵的知识">
-<meta property="og:type" content="website">
-<meta property="og:title" content="江南小俊">
-<meta property="og:url" content="https://xyj1209.github.io/archives/index.html">
+<meta name="description" content="Object类，是所有类的父类，所有类默认继承此类  package java.lang;  public class Object {     //通过JNI调用本地方法     private static native void registerNatives();     //静态块，对象初始化的时候自动调用     static {         registerNatives();">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java.lang包下的类源码学习">
+<meta property="og:url" content="https://xyj1209.github.io/java-lang包下的类源码学习/index.html">
 <meta property="og:site_name" content="江南小俊">
-<meta property="og:description" content="以最低的姿态去学习，去汲取宝贵的知识">
+<meta property="og:description" content="Object类，是所有类的父类，所有类默认继承此类  package java.lang;  public class Object {     //通过JNI调用本地方法     private static native void registerNatives();     //静态块，对象初始化的时候自动调用     static {         registerNatives();">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-12T13:34:42.074Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="江南小俊">
-<meta name="twitter:description" content="以最低的姿态去学习，去汲取宝贵的知识">
+<meta name="twitter:title" content="java.lang包下的类源码学习">
+<meta name="twitter:description" content="Object类，是所有类的父类，所有类默认继承此类  package java.lang;  public class Object {     //通过JNI调用本地方法     private static native void registerNatives();     //静态块，对象初始化的时候自动调用     static {         registerNatives();">
 
 
 
@@ -125,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="https://xyj1209.github.io/archives/">
+  <link rel="canonical" href="https://xyj1209.github.io/java-lang包下的类源码学习/">
 
 
 
 
 
-  <title>归档 | 江南小俊</title>
+  <title>java.lang包下的类源码学习 | 江南小俊</title>
   
 
 
@@ -160,7 +161,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -266,357 +267,275 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/java-lang包下的类源码学习/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="江南小俊">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="江南小俊">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">java.lang包下的类源码学习</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-12T21:09:00+08:00">
+                2019-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 9 篇日志。 继续努力。
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/java-lang包下的类源码学习/" itemprop="url">
-              
-                <span itemprop="name">java.lang包下的类源码学习</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-12T21:09:00+08:00" content="2019-01-12">
-          01-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019计划/" itemprop="url">
-              
-                <span itemprop="name">2019计划</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-12T13:18:23+08:00" content="2019-01-12">
-          01-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
+            
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
+          
+          
+             <span id="/java-lang包下的类源码学习/" class="leancloud_visitors" data-flag-title="java.lang包下的类源码学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/常见算法题/" itemprop="url">
-              
-                <span itemprop="name">常见算法题</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-22T12:35:45+08:00" content="2018-12-22">
-          12-22
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/八大排序/" itemprop="url">
-              
-                <span itemprop="name">八大排序</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-11T22:32:35+08:00" content="2018-12-11">
-          12-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/设计模式/" itemprop="url">
-              
-                <span itemprop="name">设计模式</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-08T14:15:54+08:00" content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
+        <blockquote>
+<p>Object类，是所有类的父类，所有类默认继承此类</p>
+</blockquote>
+<pre><code>package java.lang;
 
-        
-        
-        
+public class Object {
+    //通过JNI调用本地方法
+    private static native void registerNatives();
+    //静态块，对象初始化的时候自动调用
+    static {
+        registerNatives();
+    }
 
-        
-        
+   //本地方法，获取此Object的运行时类
+    public final native Class&lt;?&gt; getClass();
 
-        
+   //本地方法，生成hashCode,对象相同，hashCode一样
+    public native int hashCode();
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+    //相等判断，判断内存地址
+    public boolean equals(Object obj) {
+        return (this == obj);
+    }
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/Java集合/" itemprop="url">
-              
-                <span itemprop="name">Java集合</span>
-              
-            </a>
-        
-      </h2>
+    //本地方法，用于对象的复制
+    protected native Object clone() throws CloneNotSupportedException;
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-08T14:15:44+08:00" content="2018-12-08">
-          12-08
-        </time>
-      </div>
+   //toString()方法，全限定类名+@+hashCode的16进制
+    public String toString() {
+        return getClass().getName() + &quot;@&quot; + Integer.toHexString(hashCode());
+    }
 
-    </header>
-  </article>
+    //唤醒在此对象监视器上等待的单个线程
+    public final native void notify();
 
+    //唤醒在此对象监视器上等待的所有线程    
+    public final native void notifyAll();
 
+    //wait方法会引起当前线程阻塞，直到另外一个线程在对应的对象上调用notify或者notifyAll()方法，或者达到了方法参数中指定的时间。 
+    public final native void wait(long timeout) throws InterruptedException;
 
+           this exception is thrown.
+    //更细粒度地控制堵塞的时间级，主要应用于高并发的场景
+    public final void wait(long timeout, int nanos) throws InterruptedException {
+        if (timeout &lt; 0) {
+            throw new IllegalArgumentException(&quot;timeout value is negative&quot;);
+        }
+
+        if (nanos &lt; 0 || nanos &gt; 999999) {
+            throw new IllegalArgumentException(
+                                &quot;nanosecond timeout value out of range&quot;);
+        }
+
+        if (nanos &gt; 0) {
+            timeout++;
+        }
+
+        wait(timeout);
+    }
+    //同上
+    public final void wait() throws InterruptedException {
+        wait(0);
+    }
+    //垃圾回收调用，一个对象只能调用一次，可在此方法进行死亡逃逸
+    protected void finalize() throws Throwable { }
+}
+</code></pre>
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/Java并发/" itemprop="url">
-              
-                <span itemprop="name">Java并发</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-08T14:15:33+08:00" content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/剑指offer/" itemprop="url">
-              
-                <span itemprop="name">剑指offer</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-08T14:15:19+08:00" content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/Java虚拟机/" itemprop="url">
-              
-                <span itemprop="name">Java虚拟机</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-12-04T23:05:34+08:00" content="2018-12-04">
-          12-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="江南小俊 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="江南小俊 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019计划/" rel="next" title="2019计划">
+                <i class="fa fa-chevron-left"></i> 2019计划
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+         <!--MOB SHARE BEGIN-->
+                                <div class="-mob-share-ui-button -mob-share-open">分享</div>
+                                <div class="-mob-share-ui" style="display: none">
+                                    <ul class="-mob-share-list">
+                                        <li class="-mob-share-weibo"><p>新浪微博</p></li>
+                                        <li class="-mob-share-tencentweibo"><p>腾讯微博</p></li>
+                                        <li class="-mob-share-qzone"><p>QQ空间</p></li>
+                                        <li class="-mob-share-qq"><p>QQ好友</p></li>
+                                        <li class="-mob-share-weixin"><p>微信</p></li>
+                                        <li class="-mob-share-douban"><p>豆瓣</p></li>
+                                        <li class="-mob-share-renren"><p>人人网</p></li>
+                                        <li class="-mob-share-kaixin"><p>开心网</p></li>
+                                        <li class="-mob-share-facebook"><p>Facebook</p></li>
+                                        <li class="-mob-share-twitter"><p>Twitter</p></li>
+                                        <li class="-mob-share-pocket"><p>Pocket</p></li>
+                                        <li class="-mob-share-google"><p>Google+</p></li>
+                                        <li class="-mob-share-youdao"><p>有道云笔记</p></li>
+                                        <li class="-mob-share-mingdao"><p>明道</p></li>
+                                        <li class="-mob-share-pengyou"><p>朋友网</p></li>
+                                        <li class="-mob-share-tumblr"><p>Tumblr</p></li>
+                                        <li class="-mob-share-instapaper"><p>Instapaper</p></li>
+                                        <li class="-mob-share-linkedin"><p>LinkedIn</p></li>
+                                    </ul>
+                                    <div class="-mob-share-close">取消</div>
+                                </div>
+                                <div class="-mob-share-ui-bg"></div>
+                                <script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey="></script>
+                                <!--MOB SHARE END-->
+      
+    </div>
+  </div>
 
 
           </div>
@@ -624,6 +543,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTQ3My8xODAyMA"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -850,6 +778,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -878,6 +810,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 

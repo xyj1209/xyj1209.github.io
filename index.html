@@ -281,6 +281,202 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/java-lang包下的类源码学习/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="江南小俊">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="江南小俊">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/java-lang包下的类源码学习/" itemprop="url">java.lang包下的类源码学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-12T21:09:00+08:00">
+                2019-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/java-lang包下的类源码学习/" class="leancloud_visitors" data-flag-title="java.lang包下的类源码学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Object类，是所有类的父类，所有类默认继承此类</p>
+</blockquote>
+<pre><code>package java.lang;
+
+public class Object {
+    //通过JNI调用本地方法
+    private static native void registerNatives();
+    //静态块，对象初始化的时候自动调用
+    static {
+        registerNatives();
+    }
+
+   //本地方法，获取此Object的运行时类
+    public final native Class&lt;?&gt; getClass();
+
+   //本地方法，生成hashCode,对象相同，hashCode一样
+    public native int hashCode();
+
+    //相等判断，判断内存地址
+    public boolean equals(Object obj) {
+        return (this == obj);
+    }
+
+    //本地方法，用于对象的复制
+    protected native Object clone() throws CloneNotSupportedException;
+
+   //toString()方法，全限定类名+@+hashCode的16进制
+    public String toString() {
+        return getClass().getName() + &quot;@&quot; + Integer.toHexString(hashCode());
+    }
+
+    //唤醒在此对象监视器上等待的单个线程
+    public final native void notify();
+
+    //唤醒在此对象监视器上等待的所有线程    
+    public final native void notifyAll();
+
+    //wait方法会引起当前线程阻塞，直到另外一个线程在对应的对象上调用notify或者notifyAll()方法，或者达到了方法参数中指定的时间。 
+    public final native void wait(long timeout) throws InterruptedException;
+
+           this exception is thrown.
+    //更细粒度地控制堵塞的时间级，主要应用于高并发的场景
+    public final void wait(long timeout, int nanos) throws InterruptedException {
+        if (timeout &lt; 0) {
+            throw new IllegalArgumentException(&quot;timeout value is negative&quot;);
+        }
+
+        if (nanos &lt; 0 || nanos &gt; 999999) {
+            throw new IllegalArgumentException(
+                                &quot;nanosecond timeout value out of range&quot;);
+        }
+
+        if (nanos &gt; 0) {
+            timeout++;
+        }
+
+        wait(timeout);
+    }
+    //同上
+    public final void wait() throws InterruptedException {
+        wait(0);
+    }
+    //垃圾回收调用，一个对象只能调用一次，可在此方法进行死亡逃逸
+    protected void finalize() throws Throwable { }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/2019计划/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1135,136 +1331,6 @@ public class QuickSort {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xyj1209.github.io/Java集合/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="江南小俊">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="江南小俊">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/Java集合/" itemprop="url">Java集合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T14:15:44+08:00">
-                2018-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/Java集合/" class="leancloud_visitors" data-flag-title="Java集合">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1315,7 +1381,7 @@ public class QuickSort {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
